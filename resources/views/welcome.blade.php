@@ -77,7 +77,7 @@ int main(){
             readOnly: true
         });
         cm2.setSize("100%", "100%");
-        alert(cm.getValue());
+        
         const settings = {
 	        url: "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&fields=*",
 	        method: "post",

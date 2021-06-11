@@ -23,11 +23,17 @@ mix.scripts([
     "node_modules/codemirror/lib/codemirror.js"
 ],"public/js/codemirror.js");
 
+//codemirror theme 
 mix.styles([
     "node_modules/codemirror/theme/erlang-dark.css"
 ],"public/css/themes.css");
 
+//codemirror editor type
 mix.scripts([
     "node_modules/codemirror/mode/javascript/javascript.js",
     "node_modules/codemirror/mode/clike/clike.js"
 ],"public/js/modes.js");
+
+mix.scripts([
+
+]);
