@@ -55,7 +55,9 @@
             <textarea name="" id="editor">#include <iostream>
 using namespace std;
 int main(){
-    cout << "Hello World";
+    int num1,num2;
+    total=num1+num2;
+    cout << total;
     return 0;
 }</textarea>
           </div>
@@ -65,20 +67,20 @@ int main(){
         </div>
     </div>
     <script>
-        let cm = new CodeMirror.fromTextArea(document.getElementById("editor"), {
+        let editor = new CodeMirror.fromTextArea(document.getElementById("editor"), {
             lineNumbers: true, 
             mode: "javascript", 
             theme: "erlang-dark"
         });
-        cm.setSize("100%", "100%");
+        editor.setSize("100%", "100%");
 
-        let cm2 = new CodeMirror.fromTextArea(document.getElementById("compiler"), {
+        let compiler = new CodeMirror.fromTextArea(document.getElementById("compiler"), {
             lineNumbers: true,
             readOnly: true
         });
-        cm2.setSize("100%", "100%");
+        compiler.setSize("100%", "100%");
         
-        const settings = {
+        $.ajax({
 	        url: "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&fields=*",
 	        method: "post",
             headers: {
@@ -87,12 +89,20 @@ int main(){
             },
             data: {
                 language_id: "54",
-                source_code: btoa(cm.getValue())
+                source_code: btoa(editor.getValue())
             }
-        };
-
-        $.ajax(settings).done(function (response) {
-            console.log(response);
+        }).done(function(res){
+            let token = res.token;
+            $.ajax({
+                "url": "https://judge0-ce.p.rapidapi.com/submissions/"+token+"?base64_encoded=true&fields=*",
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-key": "35abad9fa6msh9ac3a4e4c74c8edp15f100jsn11dbf8f7bb9b",
+                    "x-rapidapi-host": "judge0-ce.p.rapidapi.com"
+                }
+            }).done(function(res){
+                console.log(res);
+            });
         });
     </script>
 </body>

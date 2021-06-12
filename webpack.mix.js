@@ -33,7 +33,3 @@ mix.scripts([
     "node_modules/codemirror/mode/javascript/javascript.js",
     "node_modules/codemirror/mode/clike/clike.js"
 ],"public/js/modes.js");
-
-mix.scripts([
-
-]);
