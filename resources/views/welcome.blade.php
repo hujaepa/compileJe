@@ -31,6 +31,10 @@
             height: inherit;
             width: inherit;
         }
+
+        .nav-item>a:hover {
+            color: green;
+        }
     </style>
 </head>
 <body>
@@ -41,10 +45,24 @@
         </button>
         
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <button class="btn btn-success" id="compileBtn"><i class="fas fa-play-circle"></i> Compile & Run<span class="sr-only">(current)</span></button>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Change Language
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="#">C</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">C++</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Java</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">C#</a>
+                    </div>
+                  </li>
             </ul>
         </div>
     </nav>
@@ -79,7 +97,9 @@ int main(){
             readOnly: true
         });
         compiler.setSize("100%", "100%");
-        
+    
+    $("#compileBtn").click(function(){
+        compiler.setValue("Compiling..."); 
         $.ajax({
 	        url: "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&fields=*",
 	        method: "post",
@@ -101,9 +121,11 @@ int main(){
                     "x-rapidapi-host": "judge0-ce.p.rapidapi.com"
                 }
             }).done(function(res){
-                console.log(res);
+                // console.log(atob(res.compile_output));
+                compiler.setValue(atob(res.stdout));
             });
         });
+    });
     </script>
 </body>
 </html>
