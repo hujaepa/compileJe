@@ -73,9 +73,7 @@
             <textarea name="" id="editor">#include <iostream>
 using namespace std;
 int main(){
-    int num1,num2;
-    total=num1+num2;
-    cout << total;
+    cout << "Hello";
     return 0;
 }</textarea>
           </div>
@@ -121,7 +119,6 @@ int main(){
                     "x-rapidapi-host": "judge0-ce.p.rapidapi.com"
                 }
             }).done(function(res){
-                // console.log(atob(res.compile_output));
                 compiler.setValue(atob(res.stdout));
             });
         });
