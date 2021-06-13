@@ -70,12 +70,15 @@
     <div class="container-fluid h-100">
         <div class="row h-100">
           <div class="col-sm-6" id="background-repeat">
-            <textarea name="" id="editor">#include <iostream>
-using namespace std;
-int main(){
-    cout << "Hello";
-    return 0;
-}</textarea>
+            <textarea name="" id="editor">@php
+                    $sourceCode = fopen("codes/example.cpp", "r");
+                    while(! feof($sourceCode))  {
+                        $result = fgets($sourceCode);
+                        echo $result;
+                    }
+                    fclose($sourceCode);   
+                @endphp
+            </textarea>
           </div>
           <div class="col-sm-6" id="background-repeat-2">
               <textarea id="compiler">/*No Output*/</textarea>
