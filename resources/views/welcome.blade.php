@@ -54,13 +54,13 @@
                         Change Language
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="#">C</a>
+                      <a class="dropdown-item cpp" href="/{{Crypt::encrypt(50)}}">C</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">C++</a>
+                      <a class="dropdown-item" href="/{{Crypt::encrypt(54)}}">C++</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Java</a>
+                      <a class="dropdown-item" href="/{{Crypt::encrypt(62)}}">Java</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">C#</a>
+                      <a class="dropdown-item" href="/{{Crypt::encrypt(51)}}">C#</a>
                     </div>
                   </li>
             </ul>
@@ -71,7 +71,24 @@
         <div class="row h-100">
           <div class="col-sm-6" id="background-repeat">
             <textarea name="" id="editor">@php
-                    $sourceCode = fopen("codes/example.cpp", "r");
+                    $fileUrl = "codes/example.cpp";
+                    if(!empty($id)){
+                        switch ($id) {
+                            case 54:
+                                $fileUrl = "codes/example.cpp";
+                                break;
+                            case 50:
+                                $fileUrl = "codes/example.c";
+                                break;
+                            case 62:
+                                $fileUrl = "codes/example.java";
+                                break;
+                            case 51:
+                                $fileUrl = "codes/example.cs";
+                                break;
+                        }
+                    }
+                    $sourceCode = fopen($fileUrl, "r");
                     while(! feof($sourceCode))  {
                         $result = fgets($sourceCode);
                         echo $result;
@@ -86,18 +103,18 @@
         </div>
     </div>
     <script>
-        let editor = new CodeMirror.fromTextArea(document.getElementById("editor"), {
-            lineNumbers: true, 
-            mode: "javascript", 
-            theme: "erlang-dark"
-        });
-        editor.setSize("100%", "100%");
+    var editor = new CodeMirror.fromTextArea(document.getElementById("editor"), {
+        lineNumbers: true, 
+        mode: "javascript", 
+        theme: "erlang-dark"
+    });
+    editor.setSize("100%", "100%");
 
-        let compiler = new CodeMirror.fromTextArea(document.getElementById("compiler"), {
-            lineNumbers: true,
-            readOnly: true
-        });
-        compiler.setSize("100%", "100%");
+    var compiler = new CodeMirror.fromTextArea(document.getElementById("compiler"), {
+        lineNumbers: true,
+        readOnly: true
+    });
+    compiler.setSize("100%", "100%");
     
     $("#compileBtn").click(function(){
         compiler.setValue("Compiling..."); 
