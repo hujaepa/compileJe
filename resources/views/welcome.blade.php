@@ -23,8 +23,16 @@
         }
 
         #background-repeat-2 {
-            height: 100%;
             background:#F7F7F7;
+            border-style: solid;
+            border-width: thin;
+            border-color: #e8e5e5;
+        }
+        #background-repeat-3 {
+            background:#F7F7F7;
+            border-style: solid;
+            border-width: thin;
+            border-color: #e8e5e5;
         }
 
         textarea {
@@ -34,6 +42,33 @@
 
         .nav-item>a:hover {
             color: green;
+        }
+        #editor-label{
+            background-color:#F7F7F7;
+            max-height: 20%;
+            border-style: solid;
+            border-width: thin;
+            border-color: #e8e5e5;
+            font-style: italic;
+            font-weight: bold;
+        }
+        #stdin-label{
+            background-color:#F7F7F7;
+            max-height: 20%;
+            border-style: solid;
+            border-width: thin;
+            border-color: #e8e5e5;
+            font-style: italic;
+            font-weight: bold;
+        }
+        #compiler-label{
+            background-color:#F7F7F7;
+            max-height: 20%;
+            border-style: solid;
+            border-width: thin;
+            border-color: #e8e5e5;
+            font-style: italic;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -68,6 +103,10 @@
     </nav>
 
     <div class="container-fluid h-100">
+        <div class="row">
+            <div class="col-sm-6 text-success" id="editor-label">Editor</div>
+            <div class="col-sm-6 text-success" id="stdin-label">Stdin</div>
+        </div>
         <div class="row h-100">
           <div class="col-sm-6" id="background-repeat">
             <textarea name="" id="editor">@php
@@ -93,12 +132,20 @@
                         $result = fgets($sourceCode);
                         echo $result;
                     }
-                    fclose($sourceCode);   
+                    fclose($sourceCode);
                 @endphp
             </textarea>
           </div>
-          <div class="col-sm-6" id="background-repeat-2">
-              <textarea id="compiler">/*No Output*/</textarea>
+          <div class="col-sm-6">
+              <div class="row">
+                  <div class="col-sm-12" id="background-repeat-2">
+                    <textarea id="stdin"></textarea>
+                  </div>
+                  <div class="col-sm-12 text-success" id="compiler-label">Compiler</div>
+                  <div class="col-sm-12" id="background-repeat-3">
+                      <textarea id="compiler">/*No Output*/</textarea>
+                  </div>
+              </div>
           </div>
         </div>
     </div>
@@ -110,14 +157,20 @@
     });
     editor.setSize("100%", "100%");
 
+    var stdin = new CodeMirror.fromTextArea(document.getElementById("stdin"), {
+        lineNumbers: true
+    });
+    stdin.setSize("100%", "250");
+
     var compiler = new CodeMirror.fromTextArea(document.getElementById("compiler"), {
         lineNumbers: true,
         readOnly: true
     });
-    compiler.setSize("100%", "100%");
+    compiler.setSize("100%", "1200");
     
     $("#compileBtn").click(function(){
-        compiler.setValue("Compiling..."); 
+        compiler.setValue("Processing..."); 
+        let inputVal = (stdin.getValue()==="undefined" || stdin.getValue()==null) ? null : btoa(stdin.getValue());
         $.ajax({
 	        url: "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&fields=*",
 	        method: "post",
@@ -127,6 +180,7 @@
             },
             data: {
                 language_id: "54",
+                stdin:inputVal,
                 source_code: btoa(editor.getValue())
             }
         }).done(function(res){
@@ -139,7 +193,10 @@
                     "x-rapidapi-host": "judge0-ce.p.rapidapi.com"
                 }
             }).done(function(res){
-                compiler.setValue(atob(res.stdout));
+                if(res.status.id==3)
+                    compiler.setValue(atob(res.stdout));
+                else
+                    compiler.setValue(atob(res.compile_output));
             });
         });
     });
