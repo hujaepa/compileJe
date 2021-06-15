@@ -91,7 +91,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                       <a class="dropdown-item cpp" href="/{{Crypt::encrypt(50)}}">C</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="/{{Crypt::encrypt(54)}}">C++</a>
+                      <a class="dropdown-item" href="/">C++</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="/{{Crypt::encrypt(62)}}">Java</a>
                       <div class="dropdown-divider"></div>
@@ -110,12 +110,8 @@
         <div class="row h-100">
           <div class="col-sm-6" id="background-repeat">
             <textarea name="" id="editor">@php
-                    $fileUrl = "codes/example.cpp";
                     if(!empty($id)){
                         switch ($id) {
-                            case 54:
-                                $fileUrl = "codes/example.cpp";
-                                break;
                             case 50:
                                 $fileUrl = "codes/example.c";
                                 break;
@@ -126,6 +122,10 @@
                                 $fileUrl = "codes/example.cs";
                                 break;
                         }
+                    }
+                    else {
+                        $id=54;
+                        $fileUrl = "codes/example.cpp";
                     }
                     $sourceCode = fopen($fileUrl, "r");
                     while(! feof($sourceCode))  {
@@ -179,7 +179,7 @@
                 "x-rapidapi-host": "judge0-ce.p.rapidapi.com"
             },
             data: {
-                language_id: "54",
+                language_id: {{$id}},
                 stdin:inputVal,
                 source_code: btoa(editor.getValue())
             }
