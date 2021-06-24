@@ -182,24 +182,33 @@
                 language_id: {{$id}},
                 stdin:inputVal,
                 source_code: btoa(editor.getValue())
+            },
+            success: function(res){
+                setTimeout(fetchSubmission.bind(null, res.token), 1500);
             }
-        }).done(function(res){
-            let token = res.token;
-            $.ajax({
-                "url": "https://judge0-ce.p.rapidapi.com/submissions/"+token+"?base64_encoded=true&fields=*",
-                "method": "GET",
-                "headers": {
-                    "x-rapidapi-key": "35abad9fa6msh9ac3a4e4c74c8edp15f100jsn11dbf8f7bb9b",
-                    "x-rapidapi-host": "judge0-ce.p.rapidapi.com"
-                }
-            }).done(function(res){
-                if(res.status.id==3)
-                    compiler.setValue(atob(res.stdout));
-                else
-                    compiler.setValue(atob(res.compile_output));
-            });
         });
     });
+    function fetchSubmission(token){
+        $.ajax({
+            "url": "https://judge0-ce.p.rapidapi.com/submissions/"+token+"?base64_encoded=true&fields=*",
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-key": "35abad9fa6msh9ac3a4e4c74c8edp15f100jsn11dbf8f7bb9b",
+                "x-rapidapi-host": "judge0-ce.p.rapidapi.com"
+            },
+            success: function(res){
+                if ((res.status === undefined || res.status.id <= 2)) {
+                    setTimeout(fetchSubmission.bind(null, token), 1500);
+                }
+                else{
+                    if(res.status.id==3)
+                        compiler.setValue(atob(res.stdout));
+                    else
+                        compiler.setValue(atob(res.compile_output));
+                }
+            }
+        });
+    }
     </script>
 </body>
 </html>

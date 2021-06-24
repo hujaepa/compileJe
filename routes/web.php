@@ -13,5 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 use App\Http\Controllers\MainController;
+use Illuminate\Support\Facades\Crypt;
 Route::get('/',[MainController::class,'index']);
 Route::get('/{id}',[MainController::class,'specific']);
