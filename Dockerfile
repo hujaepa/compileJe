@@ -7,4 +7,5 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 ADD . /var/www
 ADD ./public /var/www/html
+ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --working-dir=/var/www/html
