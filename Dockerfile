@@ -5,7 +5,6 @@ RUN docker-php-ext-install pdo_mysql
 RUN a2enmod rewrite
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN ls -l
-
 ADD . /var/www
 ADD ./public /var/www/html
+RUN composer install --working-dir=/var/www/html
